@@ -27,7 +27,8 @@ export const CreateDiscussion = () => {
       navigate("/discussion");
     },
   });
-
+  
+// Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     mutate({ name, description });

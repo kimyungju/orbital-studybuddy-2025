@@ -40,3 +40,6 @@ export const FindGroupPage = () => {
     </div>
   );
 };
+
+//export default FindGroupPage;
+// This component fetches and displays a list of available groups

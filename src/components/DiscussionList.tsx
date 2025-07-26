@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../supabaseClient";
 import { Link } from "react-router";
 
+// Define the Discussion type
 export interface Discussion {
   id: number;
   name: string;

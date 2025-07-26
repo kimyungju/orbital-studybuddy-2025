@@ -12,7 +12,8 @@ interface Vote {
   user_id: string;
   vote: number;
 }
-
+// This component allows users to like or dislike a post
+// It fetches the current votes for the post and allows users to cast their vote
 const vote = async (voteValue: number, postId: number, userId: string) => {
   const { data: existingVote } = await supabase
     .from("votes")
