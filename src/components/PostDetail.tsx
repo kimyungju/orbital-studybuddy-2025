@@ -103,11 +103,29 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
     );
   }
 
+  // Add Back to Discussion button if discussion_id exists
+  const handleBackToDiscussion = () => {
+    if (data && (data as any).discussion_id) {
+      navigate(`/discussion/${(data as any).discussion_id}`);
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-sky-200 p-8 space-y-6">
       <h2 className="text-5xl font-bold mb-6 text-center bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent">
         {data.title}
       </h2>
+      {/* Back to Discussion button */}
+      {('discussion_id' in data) && data.discussion_id && (
+        <div className="mb-4 flex justify-center">
+          <button
+            onClick={handleBackToDiscussion}
+            className="bg-sky-100 text-sky-700 px-4 py-2 rounded-lg hover:bg-sky-200 transition-colors font-medium border border-sky-200"
+          >
+            ← Back to Discussion
+          </button>
+        </div>
+      )}
       
       {data.image_url && (
         <div className="text-center">
