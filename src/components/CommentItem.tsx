@@ -105,7 +105,6 @@ export const CommentItem = ({ comment, postId, depth }: Props) => {
             <DeleteButton 
               postId={comment.id} 
               onDeleted={() => queryClient.invalidateQueries({ queryKey: ["comments", postId] })}
-              isComment={true}
             />
           )}
         </div>

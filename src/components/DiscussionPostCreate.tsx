@@ -3,7 +3,7 @@ import type { ChangeEvent } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../supabaseClient";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+
 
 interface DiscussionPostInput {
   title: string;
@@ -54,7 +54,6 @@ export const DiscussionPostCreate = ({ discussionId, discussionName, onPostCreat
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
   const { user } = useAuth();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { mutate, isPending, isError, error } = useMutation({
