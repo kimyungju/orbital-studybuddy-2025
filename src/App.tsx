@@ -15,6 +15,17 @@ import { DiscussionsPage } from "./pages/DiscussionsPage";
 import { DiscussionPage } from "./pages/DiscussionPage";
 import { useParams } from "react-router-dom";
 
+// Wrapper components for proper useParams usage
+const PostDetailWrapper = () => {
+  const { id } = useParams<{ id: string }>();
+  return <PostDetail postId={Number(id)} />;
+};
+
+const GroupDetailWrapper = () => {
+  const { id } = useParams<{ id: string }>();
+  return <PostDetail postId={Number(id)} />;
+};
+
 function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-slate-700 transition-opacity duration-700 pt-20">
@@ -27,8 +38,8 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/create-group" element={<CreateGroupPage />} />
           <Route path="/find-group" element={<FindGroupPage />} />
-          <Route path="/group/:id" element={<PostDetail postId={Number(useParams().id)} />} />
-          <Route path="/post/:id" element={<PostDetail postId={Number(useParams().id)} />} />
+          <Route path="/group/:id" element={<GroupDetailWrapper />} />
+          <Route path="/post/:id" element={<PostDetailWrapper />} />
           <Route path="/record-study-time" element={<TimerPage />} />
           <Route path="/calendar" element={<CalendarPage />} /> 
           <Route path="/todo" element={<ToDoPage />} /> 
