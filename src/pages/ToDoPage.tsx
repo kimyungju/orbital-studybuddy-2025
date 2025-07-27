@@ -235,111 +235,11 @@ export const ToDoPage = () => {
               </li>
             ))}
           </ul>
-          <h2 className="text-xl font-bold mt-8 mb-4 text-gray-900">Create a Group</h2>
-          <input
-            type="text"
-            placeholder="Enter group title"
-            value={newGroupTitle}
-            onChange={(e) => setNewGroupTitle(e.target.value)}
-            className="px-4 py-2 rounded-lg shadow-md text-lg w-full mb-4 text-gray-800"
-          />
-          <button
-            onClick={handleCreateGroup}
-            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg shadow-md w-full"
-          >
-            Create Group
-          </button>
+          {/* Removed: Create a Group section */}
         </div>
       </div>
 
-      {/* Groups Section */}
-      <div className="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-5xl mt-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-gray-300 pb-2">
-          Your Groups
-        </h2>
-        <ul>
-          {groups.map((group) => (
-            <li key={group.id} className="text-lg mb-4">
-              <div className="flex justify-between items-center bg-white p-4 rounded-lg shadow-md">
-                <span className="font-bold text-gray-800">{group.title}</span>
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => handleToggleGroupVisibility(group.id)}
-                    className="px-2 py-1 bg-gray-500 hover:bg-gray-600 text-white font-bold rounded-lg shadow-md text-sm"
-                  >
-                    {group.isVisible ? "Hide" : "View"}
-                  </button>
-                  <button
-                    onClick={() => handleDeleteGroup(group.id)}
-                    className="px-2 py-1 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg shadow-md text-sm"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-              {group.isVisible && (
-                <div className="mt-4 pl-4">
-                  <ul>
-                    {group.subtasks.map((subtask) => (
-                      <li key={subtask.id} className="text-sm mb-2 flex justify-between items-center">
-                        <div className="flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={subtask.isDone}
-                            onChange={() => handleToggleSubtaskDone(group.id, subtask.id)}
-                            className="mr-2"
-                          />
-                          {subtask.link ? (
-                            <a
-                              href={subtask.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={`text-blue-500 underline ${subtask.isDone ? "line-through text-gray-500" : ""}`}
-                            >
-                              {subtask.text}
-                            </a>
-                          ) : (
-                            <span className="text-gray-900">{subtask.text}</span>
-                          )}
-                        </div>
-                        <button
-                          onClick={() => handleDeleteSubtask(group.id, subtask.id)}
-                          className="px-2 py-1 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg shadow-md text-sm"
-                        >
-                          Delete
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-4">
-                    <h3 className="text-lg font-bold mb-2 text-gray-900">Add Subtask</h3>
-                    <input
-                      type="text"
-                      placeholder="Enter subtask"
-                      value={newSubtask}
-                      onChange={(e) => setNewSubtask(e.target.value)}
-                      className="px-4 py-2 rounded-lg shadow-md text-lg w-full mb-4 text-gray-800"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Enter link (optional)"
-                      value={newSubtaskLink}
-                      onChange={(e) => setNewSubtaskLink(e.target.value)}
-                      className="px-4 py-2 rounded-lg shadow-md text-lg w-full mb-4 text-gray-800"
-                    />
-                    <button
-                      onClick={() => handleAddSubtaskToGroup(group.id)}
-                      className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg shadow-md w-full"
-                    >
-                      Add Subtask
-                    </button>
-                  </div>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* Removed: Groups Section */}
 
       <div className="mt-12">
         <Link
