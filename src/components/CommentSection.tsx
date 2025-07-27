@@ -28,20 +28,21 @@ const createComment = async (
   postId: number,
   userId?: string,
   author?: string
-) => {
-  if (!userId || !author) {
-    throw new Error("You must be logged in to comment.");
-  }
-
-  const { error } = await supabase.from("comments").insert({
-    post_id: postId,
-    content: newComment.content,
-    parent_comment_id: newComment.parent_comment_id || null,
-    user_id: userId,
-    author: author,
-  });
+): Promise<Comment> => {
+  const { data, error } = await supabase
+    .from("comments")
+    .insert({
+      ...newComment,
+      post_id: postId,
+      user_id: userId,
+      author: author,
+    })
+    .select("*")
+    .single();
 
   if (error) throw new Error(error.message);
+
+  return data as Comment;
 };
 
 const fetchComments = async (postId: number): Promise<Comment[]> => {
@@ -52,113 +53,126 @@ const fetchComments = async (postId: number): Promise<Comment[]> => {
     .order("created_at", { ascending: true });
 
   if (error) throw new Error(error.message);
+
   return data as Comment[];
 };
 
+const buildCommentTree = (comments: Comment[]): Comment[] => {
+  const commentMap = new Map<number, Comment & { replies: Comment[] }>();
+  const topLevelComments: (Comment & { replies: Comment[] })[] = [];
+
+  comments.forEach((comment) => {
+    commentMap.set(comment.id, { ...comment, replies: [] });
+  });
+
+  comments.forEach((comment) => {
+    const commentWithReplies = commentMap.get(comment.id)!;
+    if (comment.parent_comment_id) {
+      const parent = commentMap.get(comment.parent_comment_id);
+      if (parent) {
+        parent.replies.push(commentWithReplies);
+      }
+    } else {
+      topLevelComments.push(commentWithReplies);
+    }
+  });
+
+  return topLevelComments;
+};
+
 export const CommentSection = ({ postId }: Props) => {
-  const [newCommentText, setNewCommentText] = useState<string>("");
+  const [newComment, setNewComment] = useState<string>("");
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const {
-    data: comments,
-    isLoading,
-    error,
-  } = useQuery<Comment[], Error>({
+  const { data: comments = [], isLoading } = useQuery<Comment[]>({
     queryKey: ["comments", postId],
     queryFn: () => fetchComments(postId),
-    refetchInterval: 5000,
   });
 
-  const { mutate, isPending, isError } = useMutation({
-    mutationFn: (newComment: NewComment) =>
+  const { mutate: addComment, isPending } = useMutation({
+    mutationFn: (comment: NewComment) =>
       createComment(
-        newComment,
+        comment,
         postId,
         user?.id,
-        user?.user_metadata?.user_name
+        user?.user_metadata.user_name || user?.email || "Anonymous"
       ),
     onSuccess: () => {
+      setNewComment("");
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newCommentText) return;
-    mutate({ content: newCommentText, parent_comment_id: null });
-    setNewCommentText("");
+    if (!newComment.trim()) return;
+    addComment({ content: newComment });
   };
 
-  /* Map of Comments - Organize Replies - Return Tree  */
-  const buildCommentTree = (
-    flatComments: Comment[]
-  ): (Comment & { children?: Comment[] })[] => {
-    const map = new Map<number, Comment & { children?: Comment[] }>();
-    const roots: (Comment & { children?: Comment[] })[] = [];
-
-    flatComments.forEach((comment) => {
-      map.set(comment.id, { ...comment, children: [] });
-    });
-
-    flatComments.forEach((comment) => {
-      if (comment.parent_comment_id) {
-        const parent = map.get(comment.parent_comment_id);
-        if (parent) {
-          parent.children!.push(map.get(comment.id)!);
-        }
-      } else {
-        roots.push(map.get(comment.id)!);
-      }
-    });
-
-    return roots;
-  };
+  const commentTree = buildCommentTree(comments);
 
   if (isLoading) {
-    return <div> Loading comments...</div>;
+    return (
+      <div className="text-center py-6">
+        <div className="text-slate-600">Loading comments...</div>
+      </div>
+    );
   }
-
-  if (error) {
-    return <div> Error: {error.message}</div>;
-  }
-
-  const commentTree = comments ? buildCommentTree(comments) : [];
 
   return (
-    <div className="mt-6">
-      <h3 className="text-2xl font-semibold mb-4">Comments</h3>
-      {/* Create Comment Section */}
+    <div className="space-y-6">
+      <h3 className="text-2xl font-semibold text-slate-800">
+        Comments ({comments.length})
+      </h3>
+
+      {/* Add Comment Form */}
       {user ? (
-        <form onSubmit={handleSubmit} className="mb-4">
-          <textarea
-            value={newCommentText}
-            onChange={(e) => setNewCommentText(e.target.value)}
-            className="w-full border border-white/10 bg-transparent p-2 rounded"
-            placeholder="Write a comment..."
-            rows={3}
-          />
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div>
+            <label htmlFor="comment" className="block mb-2 font-medium text-slate-800">
+              Add a comment
+            </label>
+            <textarea
+              id="comment"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder:text-slate-400"
+              rows={3}
+              placeholder="Share your thoughts..."
+              required
+            />
+          </div>
           <button
             type="submit"
-            className="mt-2 bg-purple-500 text-white px-4 py-2 rounded cursor-pointer"
+            disabled={isPending || !newComment.trim()}
+            className="bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
           >
-            {isPending ? "Posting..." : "Post Comment"}
+            {isPending ? "Adding..." : "Add Comment"}
           </button>
-          {isError && (
-            <p className="text-red-500 mt-2">Error posting comment.</p>
-          )}
         </form>
       ) : (
-        <p className="mb-4 text-gray-600">
-          You must be logged in to post a comment.
-        </p>
+        <div className="text-center p-6 border border-amber-300 rounded-lg bg-amber-50">
+          <p className="text-slate-700 font-medium">Please log in to leave a comment.</p>
+        </div>
       )}
 
-      {/* Comments Display Section */}
+      {/* Comments List */}
       <div className="space-y-4">
-        {commentTree.map((comment, key) => (
-          <CommentItem key={key} comment={comment} postId={postId} />
-        ))}
+        {commentTree.length > 0 ? (
+          commentTree.map((comment) => (
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              postId={postId}
+              depth={0}
+            />
+          ))
+        ) : (
+          <div className="text-center py-8 text-slate-500">
+            No comments yet. Be the first to share your thoughts!
+          </div>
+        )}
       </div>
     </div>
   );

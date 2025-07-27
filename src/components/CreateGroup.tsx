@@ -79,10 +79,18 @@ export const CreateGroup = () => {
     }
   };
 
+  if (isPending) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="text-slate-600 text-lg">Creating your group...</div>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-4">
+    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6 bg-white p-8 rounded-lg shadow-sm border-2 border-slate-300">
       <div>
-        <label htmlFor="title" className="block mb-2 font-medium">
+        <label htmlFor="title" className="block mb-2 font-medium text-slate-800">
           Title
         </label>
         <input
@@ -90,12 +98,13 @@ export const CreateGroup = () => {
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full border-2 border-gray-500 focus:border-blue-500 bg-transparent p-2 rounded outline-none text-white"
+          className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder:text-slate-400"
+          placeholder="Enter group title..."
           required
         />
       </div>
       <div>
-        <label htmlFor="date" className="block mb-2 font-medium">
+        <label htmlFor="date" className="block mb-2 font-medium text-slate-800">
           Date
         </label>
         <input
@@ -103,12 +112,12 @@ export const CreateGroup = () => {
           id="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="w-full border-2 border-gray-500 focus:border-blue-500 bg-transparent p-2 rounded outline-none text-white"
+          className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
           required
         />
       </div>
       <div>
-        <label htmlFor="location" className="block mb-2 font-medium">
+        <label htmlFor="location" className="block mb-2 font-medium text-slate-800">
           Location
         </label>
         <input
@@ -116,45 +125,47 @@ export const CreateGroup = () => {
           id="location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          className="w-full border-2 border-gray-500 focus:border-blue-500 bg-transparent p-2 rounded outline-none text-white"
+          className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder:text-slate-400"
+          placeholder="Where will you meet?"
           required
         />
       </div>
       <div>
-        <label htmlFor="content" className="block mb-2 font-medium">
+        <label htmlFor="content" className="block mb-2 font-medium text-slate-800">
           Content
         </label>
         <textarea
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="w-full border-2 border-gray-500 focus:border-blue-500 bg-transparent p-2 rounded outline-none text-white"
+          className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder:text-slate-400"
           rows={5}
+          placeholder="Describe your study group..."
           required
         />
       </div>
-
       <div>
-        <label htmlFor="image" className="block mb-2 font-medium">
-          Upload Image
+        <label htmlFor="image" className="block mb-2 font-medium text-slate-800">
+          Image (optional)
         </label>
         <input
           type="file"
           id="image"
           accept="image/*"
           onChange={handleFileChange}
-          className="w-full text-gray-200"
+          className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg file:bg-emerald-500 file:text-white file:border-none file:rounded file:px-4 file:py-2 file:mr-4 file:hover:bg-emerald-600 transition-colors"
         />
       </div>
       <button
         type="submit"
-        className="bg-purple-500 text-white px-4 py-2 rounded cursor-pointer"
+        className="w-full bg-gradient-to-r from-sky-600 to-emerald-600 text-white px-6 py-3 rounded-lg hover:from-sky-700 hover:to-emerald-700 transition-all duration-200 font-medium shadow-md"
       >
-        {isPending ? "Creating..." : "Create Group"}
+        Create Group
       </button>
-
       {isError && (
-        <p className="text-red-500"> Error creating group: {error?.message}</p>
+        <div className="text-red-700 text-sm mt-2 bg-red-100 p-3 rounded-lg border border-red-300">
+          Error: {error?.message}
+        </div>
       )}
     </form>
   );

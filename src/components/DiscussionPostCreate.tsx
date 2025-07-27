@@ -99,8 +99,8 @@ export const DiscussionPostCreate = ({ discussionId, discussionName, onPostCreat
 
   if (!user) {
     return (
-      <div className="text-center p-6 border border-sky-200 rounded-lg bg-amber-50/30">
-        <p className="text-slate-600">Please log in to create posts in this discussion.</p>
+      <div className="text-center p-6 border border-amber-300 rounded-lg bg-amber-50">
+        <p className="text-slate-700 font-medium">Please log in to create posts in this discussion.</p>
       </div>
     );
   }
@@ -115,14 +115,14 @@ export const DiscussionPostCreate = ({ discussionId, discussionName, onPostCreat
           + Create New Post in "{discussionName}"
         </button>
       ) : (
-        <div className="border border-sky-200 p-6 rounded-lg bg-white/70 backdrop-blur-sm shadow-sm">
-          <h3 className="text-2xl font-semibold mb-4 text-sky-700">
+        <div className="border-2 border-slate-300 p-6 rounded-lg bg-white shadow-sm">
+          <h3 className="text-2xl font-semibold mb-4 text-slate-800">
             Add Post to "{discussionName}"
           </h3>
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="title" className="block mb-2 font-medium text-slate-700">
+              <label htmlFor="title" className="block mb-2 font-medium text-slate-800">
                 Post Title
               </label>
               <input
@@ -130,21 +130,21 @@ export const DiscussionPostCreate = ({ discussionId, discussionName, onPostCreat
                 id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full border border-sky-200 bg-white text-slate-700 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder:text-slate-400"
                 placeholder="Enter your post title..."
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="content" className="block mb-2 font-medium text-slate-700">
+              <label htmlFor="content" className="block mb-2 font-medium text-slate-800">
                 Content
               </label>
               <textarea
                 id="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                className="w-full border border-sky-200 bg-white text-slate-700 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder:text-slate-400"
                 rows={4}
                 placeholder="Share your thoughts about this discussion..."
                 required
@@ -152,7 +152,7 @@ export const DiscussionPostCreate = ({ discussionId, discussionName, onPostCreat
             </div>
 
             <div>
-              <label htmlFor="image" className="block mb-2 font-medium text-slate-700">
+              <label htmlFor="image" className="block mb-2 font-medium text-slate-800">
                 Image (optional)
               </label>
               <input
@@ -160,7 +160,7 @@ export const DiscussionPostCreate = ({ discussionId, discussionName, onPostCreat
                 id="image"
                 accept="image/*"
                 onChange={handleFileChange}
-                className="w-full border border-sky-200 bg-white text-slate-700 p-3 rounded-lg file:bg-emerald-500 file:text-white file:border-none file:rounded file:px-4 file:py-2 file:mr-4 file:hover:bg-emerald-600 transition-colors"
+                className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg file:bg-emerald-500 file:text-white file:border-none file:rounded file:px-4 file:py-2 file:mr-4 file:hover:bg-emerald-600 transition-colors"
               />
             </div>
 
@@ -188,7 +188,7 @@ export const DiscussionPostCreate = ({ discussionId, discussionName, onPostCreat
             </div>
 
             {isError && (
-              <div className="text-red-600 text-sm mt-2 bg-red-50 p-3 rounded-lg">
+              <div className="text-red-700 text-sm mt-2 bg-red-100 p-3 rounded-lg border border-red-300">
                 Error creating post: {error?.message}
               </div>
             )}
