@@ -121,49 +121,7 @@ export const ToDoPage = () => {
     }
   };
 
-  const handleCreateGroup = async () => {
-    if (!newGroupTitle.trim() || selectedTasks.length === 0) return;
-    // insert group
-    const { data: grp, error: ge } = await supabase
-      .from("todo-groups")
-      .insert([{ title: newGroupTitle }])
-      .select();
-    if (ge) return console.error(ge);
-    const newGroupId = grp![0].id;
-    // assign selected tasks
-    const { error: ue } = await supabase
-      .from("todos")
-      .update({ group_id: newGroupId })
-      .in("id", selectedTasks);
-    if (ue) return console.error(ue);
-    // update state
-    const subtasks = tasks.filter((t) => selectedTasks.includes(t.id));
-    setGroups([...groups, { id: newGroupId, title: newGroupTitle, subtasks, isVisible: false }]);
-    setTasks(tasks.filter((t) => !selectedTasks.includes(t.id)));
-    setSelectedTasks([]);
-    setNewGroupTitle("");
-  };
-
-  const handleAddSubtaskToGroup = async (groupId: number) => {
-    if (!newSubtask.trim()) return;
-    const { data, error } = await supabase
-      .from("todos")
-      .insert([
-        { text: newSubtask, link: newSubtaskLink || null, group_id: groupId },
-      ])
-      .select();
-    if (error) return console.error(error);
-    const inserted = data![0];
-    setGroups(
-      groups.map((g) =>
-        g.id === groupId
-          ? { ...g, subtasks: [...g.subtasks, { id: inserted.id, text: inserted.text, link: inserted.link, isDone: inserted.is_done }] }
-          : g
-      )
-    );
-    setNewSubtask("");
-    setNewSubtaskLink("");
-  };
+  
 
   const handleDeleteTask = async (taskId: number) => {
     const { error } = await supabase.from("todos").delete().eq("id", taskId);
@@ -235,11 +193,8 @@ export const ToDoPage = () => {
               </li>
             ))}
           </ul>
-          {/* Removed: Create a Group section */}
         </div>
       </div>
-
-      {/* Removed: Groups Section */}
 
       <div className="mt-12">
         <Link
