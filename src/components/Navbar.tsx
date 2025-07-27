@@ -1,167 +1,125 @@
-import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const { signOut, user } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
-  const displayName = user?.user_metadata.user_name || user?.email;
+  const isActive = (path: string) => location.pathname === path;
 
-  const isActive = (path: string) => {
-    if (path === "/find-group") {
-      return location.pathname.startsWith("/find-group");
-    }
-    if (path === "/discussion/create") {
-      return location.pathname === "/discussion/create";
-    }
-    if (path === "/discussions") {
-      return location.pathname === "/discussions";
-    }
-    if (path === "/create-group") {
-      return location.pathname === "/create-group";
-    }
-    if (path === "/") {
-      return location.pathname === "/";
-    }
-    return location.pathname === path;
-  };
-
-  const linkClass = (path: string) =>
-    "transition-colors px-3 py-2 rounded-md whitespace-nowrap " +
-    (isActive(path)
-      ? "border-b-4 border-purple-500 text-white"
-      : "text-gray-300 hover:text-white hover:border-b-4 hover:border-purple-500 border-b-4 border-transparent");
+  const getLinkClasses = (path: string) =>
+    isActive(path)
+      ? "text-sky-700 hover:text-sky-800 border-b-4 border-sky-600 pb-1 font-semibold"
+      : "text-slate-600 hover:text-sky-700 hover:border-b-4 hover:border-sky-500 border-b-4 border-transparent pb-1 transition-colors";
 
   return (
-    <nav className="fixed top-0 w-full z-40 bg-[rgba(10,10,10,0.8)] backdrop-blur-lg border-b border-white/10 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          <Link to="/" className="font-mono text-xl font-bold text-white">
-            Study<span className="text-purple-500">Buddy</span>
+    <nav className="bg-white/80 backdrop-blur-sm shadow-lg fixed top-0 left-0 right-0 z-50 border-b border-sky-100">
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex items-center justify-between">
+          {/* Logo/Brand */}
+          <Link to="/" className="flex items-center space-x-2">
+            <img
+              src="/logo.jpg"
+              alt="StudyBuddy Logo"
+              className="w-8 h-8 rounded-full object-cover"
+            />
+            <span className="text-2xl font-bold text-slate-700">
+              Study<span className="text-sky-600">Buddy</span>
+            </span>
           </Link>
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className={linkClass("/")}>
-              Home
+          {/* Navigation Links */}
+          <div className="hidden md:flex space-x-8">
+            <Link to="/home" className={getLinkClasses("/home")}>
+              Dashboard
             </Link>
-            <Link to="/create-group" className={linkClass("/create-group")}>
+            <Link to="/create-group" className={getLinkClasses("/create-group")}>
               Create Group
             </Link>
-            <Link to="/find-group" className={linkClass("/find-group")}>
+            <Link to="/find-group" className={getLinkClasses("/find-group")}>
               Groups
             </Link>
-            <Link to="/record-study-time" className={linkClass("/record-study-time")}>
-              Record
+            <Link to="/discussions" className={getLinkClasses("/discussions")}>
+              Discussions
             </Link>
-            <Link to="/discussion/create" className={linkClass("/discussion/create")}>
+            <Link
+              to="/discussion/create"
+              className={getLinkClasses("/discussion/create")}
+            >
               Create Discussion
             </Link>
-            <Link to="/discussions" className={linkClass("/discussions")}>
-              Discussions
+            <Link to="/todo" className={getLinkClasses("/todo")}>
+              ToDo
+            </Link>
+            <Link to="/calendar" className={getLinkClasses("/calendar")}>
+              Calendar
+            </Link>
+            <Link
+              to="/record-study-time"
+              className={getLinkClasses("/record-study-time")}
+            >
+              Timer
             </Link>
           </div>
 
-          {/* Desktop Auth */}
-          <div className="hidden md:flex items-center">
+          {/* Auth Section */}
+          <div className="flex items-center space-x-4">
             {user ? (
-              <div className="flex items-center space-x-4">
-                {user.user_metadata?.avatar_url && (
-                  <img
-                    src={user.user_metadata.avatar_url}
-                    alt="User Avatar"
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
-                )}
-                <span className="text-gray-300">{displayName}</span>
+              <div className="flex items-center space-x-3">
+                <span className="text-slate-600 font-medium">
+                  {user.email}
+                </span>
                 <button
                   onClick={signOut}
-                  className="bg-red-500 px-3 py-1 rounded"
+                  className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg transition-colors font-medium"
                 >
                   Sign Out
                 </button>
               </div>
             ) : (
-              <button
-                onClick={() => navigate("/login")}
-                className="bg-blue-500 px-3 py-1 rounded"
-              >
-                Log In
-              </button>
+              <div className="flex space-x-3">
+                <Link
+                  to="/login"
+                  className="text-slate-600 hover:text-sky-700 px-4 py-2 font-medium transition-colors"
+                >
+                  Log In
+                </Link>
+                <Link
+                  to="/signup"
+                  className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg transition-colors font-medium"
+                >
+                  Sign Up
+                </Link>
+              </div>
             )}
           </div>
+        </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setMenuOpen((prev) => !prev)}
-              className="text-gray-300 focus:outline-none"
-              aria-label="Toggle menu"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {menuOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
-            </button>
-          </div>
+        {/* Mobile Navigation */}
+        <div className="md:hidden mt-4 flex flex-wrap gap-2">
+          <Link to="/home" className={`${getLinkClasses("/home")} text-sm px-2 py-1`}>
+            Dashboard
+          </Link>
+          <Link to="/create-group" className={`${getLinkClasses("/create-group")} text-sm px-2 py-1`}>
+            Create
+          </Link>
+          <Link to="/find-group" className={`${getLinkClasses("/find-group")} text-sm px-2 py-1`}>
+            Groups
+          </Link>
+          <Link to="/discussions" className={`${getLinkClasses("/discussions")} text-sm px-2 py-1`}>
+            Discuss
+          </Link>
+          <Link to="/todo" className={`${getLinkClasses("/todo")} text-sm px-2 py-1`}>
+            ToDo
+          </Link>
+          <Link to="/calendar" className={`${getLinkClasses("/calendar")} text-sm px-2 py-1`}>
+            Calendar
+          </Link>
+          <Link to="/record-study-time" className={`${getLinkClasses("/record-study-time")} text-sm px-2 py-1`}>
+            Timer
+          </Link>
         </div>
       </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-[rgba(10,10,10,0.9)]">
-          <div className="px-2 pt-2 pb-3 space-y-1 flex flex-col">
-            <Link to="/" className={linkClass("/") + " w-full text-center"}>
-              Home
-            </Link>
-            <Link to="/create-group" className={linkClass("/create-group") + " w-full text-center"}>
-              Create Group
-            </Link>
-            <Link to="/find-group" className={linkClass("/find-group") + " w-full text-center"}>
-              Groups
-            </Link>
-            <Link to="/record-study-time" className={linkClass("/record-study-time") + " w-full text-center"}>
-              Record
-            </Link>
-            <Link to="/discussion/create" className={linkClass("/discussion/create") + " w-full text-center"}>
-              Create Discussion
-            </Link>
-            <Link to="/discussions" className={linkClass("/discussions") + " w-full text-center"}>
-              Discussions
-            </Link>
-            {!user && (
-              <Link
-                to="/login"
-                className="block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-500 hover:bg-blue-600 text-center w-full"
-              >
-                Log In
-              </Link>
-            )}
-          </div>
-        </div>
-      )}
     </nav>
   );
 };

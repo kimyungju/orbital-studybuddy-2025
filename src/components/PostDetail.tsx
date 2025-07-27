@@ -34,35 +34,62 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
   });
 
   if (isLoading) {
-    return <div> Loading posts...</div>;
+    return (
+      <div className="text-center py-12">
+        <div className="text-slate-600 text-lg">Loading post...</div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div> Error: {error.message}</div>;
+    return (
+      <div className="text-center py-12">
+        <div className="text-red-600 bg-red-50 p-6 rounded-lg max-w-md mx-auto">
+          Error: {error.message}
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-6xl font-bold mb-6 text-center bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+    <div className="max-w-4xl mx-auto bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-sky-200 p-8 space-y-6">
+      <h2 className="text-5xl font-bold mb-6 text-center bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent">
         {data?.title}
       </h2>
+      
       {data?.image_url && (
-        <img
-          src={data.image_url}
-          alt={data?.title}
-          className="mt-4 rounded object-cover w-full h-64"
-        />
+        <div className="text-center">
+          <img
+            src={data.image_url}
+            alt={data?.title}
+            className="mt-4 rounded-lg object-cover w-full max-w-2xl mx-auto border border-sky-100 shadow-sm"
+          />
+        </div>
       )}
-      <p className="text-gray-400">{data?.content}</p>
-      <p className="text-gray-500 text-sm">
-        Posted on: {new Date(data!.created_at).toLocaleDateString()}
-      </p>
-
-      {user?.id === data?.user_id && (
-        <DeleteButton postId={postId} onDeleted={() => navigate("/find-group")} />
-      )}
-      <LikeButton postId={postId} />
-      <CommentSection postId={postId} />
+      
+      <div className="prose prose-slate max-w-none">
+        <p className="text-slate-700 text-lg leading-relaxed whitespace-pre-wrap">
+          {data?.content}
+        </p>
+      </div>
+      
+      <div className="flex items-center justify-between pt-4 border-t border-sky-200">
+        <p className="text-slate-500 text-sm">
+          Posted on: {new Date(data!.created_at).toLocaleDateString()}
+        </p>
+        
+        {user?.id === data?.user_id && (
+          <DeleteButton postId={postId} onDeleted={() => navigate("/find-group")} />
+        )}
+      </div>
+      
+      <div className="flex gap-4 pt-4">
+        <LikeButton postId={postId} />
+      </div>
+      
+      <div className="pt-6 border-t border-sky-200">
+        <CommentSection postId={postId} />
+      </div>
     </div>
   );
 };

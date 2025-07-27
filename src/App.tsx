@@ -17,7 +17,7 @@ import { useParams } from "react-router-dom";
 
 function App() {
   return (
-    <div className="min-h-screen bg-black text-gray-100 transition-opacity duration-700 pt-20">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-slate-700 transition-opacity duration-700 pt-20">
       <Navbar />
       <div className="container mx-auto px-4 py-6">
         <Routes>
@@ -28,6 +28,7 @@ function App() {
           <Route path="/create-group" element={<CreateGroupPage />} />
           <Route path="/find-group" element={<FindGroupPage />} />
           <Route path="/group/:id" element={<PostDetail postId={Number(useParams().id)} />} />
+          <Route path="/post/:id" element={<PostDetail postId={Number(useParams().id)} />} />
           <Route path="/record-study-time" element={<TimerPage />} />
           <Route path="/calendar" element={<CalendarPage />} /> 
           <Route path="/todo" element={<ToDoPage />} /> 

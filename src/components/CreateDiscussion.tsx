@@ -1,14 +1,17 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 interface DiscussionInput {
   name: string;
   description: string;
 }
+
 const createDiscussion = async (discussion: DiscussionInput) => {
-  const { error, data } = await supabase.from("discussions").insert(discussion);
+  const { data, error } = await supabase
+    .from("discussions")
+    .insert(discussion);
 
   if (error) throw new Error(error.message);
   return data;
@@ -24,7 +27,7 @@ export const CreateDiscussion = () => {
     mutationFn: createDiscussion,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["discussions"] });
-      navigate("/discussion");
+      navigate("/discussions");
     },
   });
   
@@ -34,12 +37,12 @@ export const CreateDiscussion = () => {
     mutate({ name, description });
   };
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-4">
-      <h2 className="text-6xl font-bold mb-6 text-center bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6 bg-white/70 backdrop-blur-sm p-8 rounded-lg shadow-sm border border-sky-200">
+      <h2 className="text-5xl font-bold mb-6 text-center bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent">
         Create New Discussion
       </h2>
       <div>
-        <label htmlFor="name" className="block mb-2 font-medium">
+        <label htmlFor="name" className="block mb-2 font-medium text-slate-700">
           Discussion Name
         </label>
         <input
@@ -47,29 +50,35 @@ export const CreateDiscussion = () => {
           id="name"
           value={name}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-          className="w-full border border-white/10 bg-transparent p-2 rounded"
+          className="w-full border border-sky-200 bg-white text-slate-700 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+          placeholder="Enter discussion topic..."
           required
         />
       </div>
       <div>
-        <label htmlFor="description" className="block mb-2 font-medium">
+        <label htmlFor="description" className="block mb-2 font-medium text-slate-700">
           Description
         </label>
         <textarea
           id="description"
           value={description}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
-          className="w-full border border-white/10 bg-transparent p-2 rounded"
-          rows={3}
+          className="w-full border border-sky-200 bg-white text-slate-700 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+          rows={4}
+          placeholder="Describe what this discussion is about..."
         />
       </div>
       <button
         type="submit"
-        className="bg-purple-500 text-white px-4 py-2 rounded cursor-pointer"
+        className="w-full bg-gradient-to-r from-sky-600 to-emerald-600 text-white px-6 py-3 rounded-lg hover:from-sky-700 hover:to-emerald-700 transition-all duration-200 font-medium shadow-md"
       >
         {isPending ? "Creating..." : "Create Discussion"}
       </button>
-      {isError && <p className="text-red-500">Error creating discussion.</p>}
+      {isError && (
+        <p className="text-red-600 bg-red-50 p-3 rounded-lg text-center">
+          Error creating discussion. Please try again.
+        </p>
+      )}
     </form>
   );
 };
