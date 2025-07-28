@@ -1,111 +1,82 @@
-import { useQuery } from "@tanstack/react-query";
-import type { Post } from "./PostList";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../supabaseClient";
-import { PostItem } from "./PostItem";
 import { DiscussionPostCreate } from "./DiscussionPostCreate";
 
 interface Props {
   discussionId: number;
 }
 
-interface PostWithDiscussion extends Post {
-  discussions: {
-    name: string;
-  };
-}
-
-interface Discussion {
-  id: number;
-  name: string;
-  description: string;
-}
-
-export const fetchDiscussionPost = async (
-  discussionId: number
-): Promise<PostWithDiscussion[]> => {
-  const { data, error } = await supabase
-    .from("groups")
-    .select("*, discussions(name)")
-    .eq("discussion_id", discussionId)
-    .order("created_at", { ascending: false });
-
-  if (error) throw new Error(error.message);
-  return data as PostWithDiscussion[];
-};
-
-const fetchDiscussion = async (discussionId: number): Promise<Discussion> => {
-  const { data, error } = await supabase
-    .from("discussions")
-    .select("*")
-    .eq("id", discussionId)
-    .single();
-
-  if (error) throw new Error(error.message);
-  return data as Discussion;
-};
-
 export const DiscussionDisplay = ({ discussionId }: Props) => {
-  const { data: posts, error: postsError, isLoading: postsLoading } = useQuery<PostWithDiscussion[], Error>({
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("realtime:discussion_posts")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "discussion_posts", filter: `discussion_id=eq.${discussionId}` },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ["discussionPost", discussionId] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [discussionId]);
+
+  const { data: posts, error: postsError, isLoading: postsLoading } = useQuery({
     queryKey: ["discussionPost", discussionId],
-    queryFn: () => fetchDiscussionPost(discussionId),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("discussion_posts")
+        .select("*")
+        .eq("discussion_id", discussionId)
+        .order("created_at", { ascending: false });
+
+      if (error) throw new Error(error.message);
+      return data;
+    },
   });
 
-  const { data: discussion, error: discussionError, isLoading: discussionLoading } = useQuery<Discussion, Error>({
-    queryKey: ["discussion", discussionId],
-    queryFn: () => fetchDiscussion(discussionId),
-  });
+  if (!discussionId) {
+    return <div className="text-center py-8">Invalid discussion ID.</div>;
+  }
 
-  if (postsLoading || discussionLoading)
+  if (postsLoading)
     return <div className="text-center py-8 text-slate-600">Loading discussion...</div>;
-  
-  if (postsError || discussionError)
+
+  if (postsError)
     return (
       <div className="text-center text-red-600 py-8 bg-red-50 rounded-lg">
-        Error: {postsError?.message || discussionError?.message}
+        Error: {postsError.message}
       </div>
     );
 
-  const discussionName = discussion?.name || (posts && posts[0]?.discussions?.name) || "Discussion";
-
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-8">
-        <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent">
-          {discussionName}
-        </h2>
-        {discussion?.description && (
-          <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
-            {discussion.description}
-          </p>
-        )}
-      </div>
-
       {/* Post Creation Component */}
-      <DiscussionPostCreate 
-        discussionId={discussionId} 
-        discussionName={discussionName}
-      />
+      <DiscussionPostCreate discussionId={discussionId} />
 
       {/* Posts List */}
       <div>
-        <h3 className="text-2xl font-semibold mb-6 text-slate-700">
-          Discussion Posts ({posts?.length || 0})
-        </h3>
-
         {posts && posts.length > 0 ? (
-          <div className="flex flex-wrap gap-6 justify-center">
+          <div className="flex flex-col gap-4">
             {posts.map((post) => (
-              <PostItem key={post.id} post={post} />
+              <div key={post.id} className="bg-slate-100 p-3 rounded-lg shadow-sm">
+                <div>{post.content}</div>
+                <div className="text-xs text-slate-400 text-right">
+                  {new Date(post.created_at).toLocaleTimeString()}
+                </div>
+              </div>
             ))}
           </div>
         ) : (
           <div className="text-center py-12 border-2 border-dashed border-sky-200 rounded-lg bg-sky-50/50">
-            <p className="text-slate-600 text-lg mb-2">
-              No posts in this discussion yet.
-            </p>
-            <p className="text-slate-500 text-sm">
-              Be the first to share your thoughts!
-            </p>
+            <p className="text-slate-600 text-lg mb-2">No messages yet.</p>
+            <p className="text-slate-500 text-sm">Be the first to send a message!</p>
           </div>
         )}
       </div>

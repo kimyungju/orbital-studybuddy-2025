@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../supabaseClient";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 // Define the Discussion type
 export interface Discussion {

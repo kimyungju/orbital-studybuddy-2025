@@ -36,8 +36,6 @@ export const Navbar = () => {
             <Link to="/discussion/create" className={getLinkClasses("/discussion/create")}>Create Discussion</Link>
             <Link to="/discussions" className={getLinkClasses("/discussions")}>Discussions</Link>
             <Link to="/todo" className={getLinkClasses("/todo")}>ToDo</Link>
-            <Link to="/calendar" className={getLinkClasses("/calendar")}>Calendar</Link>
-            <Link to="/record-study-time" className={getLinkClasses("/record-study-time")}>Timer</Link>
           </div>
 
           {/* Auth Section */}
@@ -81,8 +79,6 @@ export const Navbar = () => {
           <Link to="/discussion/create" className={`${getLinkClasses("/discussion/create")} text-sm px-2 py-1`}>Create Discussion</Link>
           <Link to="/discussions" className={`${getLinkClasses("/discussions")} text-sm px-2 py-1`}>Discuss</Link>
           <Link to="/todo" className={`${getLinkClasses("/todo")} text-sm px-2 py-1`}>ToDo</Link>
-          <Link to="/calendar" className={`${getLinkClasses("/calendar")} text-sm px-2 py-1`}>Calendar</Link>
-          <Link to="/record-study-time" className={`${getLinkClasses("/record-study-time")} text-sm px-2 py-1`}>Timer</Link>
         </div>
       </div>
     </nav>
