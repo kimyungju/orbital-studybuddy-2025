@@ -116,7 +116,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
         {data.title}
       </h2>
       {/* Back to Discussion button */}
-      {('discussion_id' in data) && data.discussion_id && (
+      {data?.discussion_id && (
         <div className="mb-4 flex justify-center">
           <button
             onClick={handleBackToDiscussion}
