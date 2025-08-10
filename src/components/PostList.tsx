@@ -12,7 +12,6 @@ export interface Post {
   avatar_url?: string;
   like_count?: number;
   comment_count?: number;
-  discussion_id?: number; 
 }
 
 const fetchPosts = async (): Promise<Post[]> => {
@@ -35,7 +34,7 @@ const fetchPosts = async (): Promise<Post[]> => {
   if (error) throw new Error(error.message);
 
   // Transform the data to match Post interface
-  return (data || []).map(post => ({
+  return (data || []).map((post) => ({
     id: post.id,
     title: post.title,
     content: post.content,
@@ -44,7 +43,7 @@ const fetchPosts = async (): Promise<Post[]> => {
     image_url: post.image_url,
     avatar_url: post.avatar_url,
     like_count: 0, // Default for now
-    comment_count: 0 // Default for now
+    comment_count: 0, // Default for now
   })) as Post[];
 };
 
