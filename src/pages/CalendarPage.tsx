@@ -6,7 +6,10 @@ import { supabase } from "../supabaseClient";
 import { ErrorBoundary } from "react-error-boundary";
 
 const ErrorFallback = ({ error }: { error: Error }) => (
-  <div role="alert" className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+  <div
+    role="alert"
+    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+  >
     <strong className="font-bold">Error:</strong>
     <span className="block sm:inline">{error.message}</span>
   </div>
@@ -36,7 +39,10 @@ export const CalendarPage = () => {
         console.log("Fetched study times:", data);
 
         const times = data.reduce(
-          (acc: { [key: string]: number }, { date, time_spent }: { date: string; time_spent: number }) => {
+          (
+            acc: { [key: string]: number },
+            { date, time_spent }: { date: string; time_spent: number }
+          ) => {
             acc[date] = (acc[date] || 0) + time_spent;
             return acc;
           },
@@ -60,7 +66,9 @@ export const CalendarPage = () => {
     if (seconds >= 60) {
       const hours = Math.floor(seconds / 3600);
       const minutes = Math.floor((seconds % 3600) / 60);
-      return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+      return `${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}`;
     }
     return `${seconds}s`;
   };
@@ -97,7 +105,7 @@ export const CalendarPage = () => {
       </div>
       <div className="mt-12">
         <Link
-          to="/record-study-time" // Corrected route
+          to="/timer"
           className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg shadow-md flex items-center"
         >
           <span className="mr-2">
