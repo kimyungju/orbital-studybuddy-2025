@@ -43,16 +43,24 @@ export const DiscussionCommentSection = ({ discussionId }: Props) => {
     mutationFn: (content: string) => addPost(content, discussionId),
     onSuccess: () => {
       setNewComment("");
-      queryClient.invalidateQueries({ queryKey: ["discussion_posts", discussionId] });
+      queryClient.invalidateQueries({
+        queryKey: ["discussion_posts", discussionId],
+      });
     },
   });
 
   useEffect(() => {
     const channel = supabase
       .channel(`discussion_posts:discussion_id=eq.${discussionId}`)
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "discussion_posts" }, () => {
-        queryClient.invalidateQueries({ queryKey: ["discussion_posts", discussionId] });
-      })
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "discussion_posts" },
+        () => {
+          queryClient.invalidateQueries({
+            queryKey: ["discussion_posts", discussionId],
+          });
+        }
+      )
       .subscribe();
 
     return () => {
@@ -93,7 +101,9 @@ export const DiscussionCommentSection = ({ discussionId }: Props) => {
           posts.map((post) => (
             <div key={post.id} className="border-b border-slate-200 pb-2">
               <div className="text-slate-700">{post.content}</div>
-              <div className="text-xs text-slate-500">{new Date(post.created_at).toLocaleString()}</div>
+              <div className="text-xs text-slate-500">
+                {new Date(post.created_at).toLocaleString()}
+              </div>
             </div>
           ))
         ) : (
