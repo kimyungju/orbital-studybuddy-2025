@@ -21,7 +21,7 @@ const fetchPosts = async (): Promise<Post[]> => {
     if (!error && data) {
       return data as Post[];
     }
-  } catch (rpcError) {
+  } catch {
     console.log("RPC function not available, using fallback query");
   }
 
