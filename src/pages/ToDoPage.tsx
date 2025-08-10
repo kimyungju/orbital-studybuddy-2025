@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
 export const ToDoPage = () => {
-  const [tasks, setTasks] = useState<{ id: number; text: string; link?: string }[]>([]);
+  const [tasks, setTasks] = useState<
+    { id: number; text: string; link?: string }[]
+  >([]);
   const [newTask, setNewTask] = useState("");
   const [newLink, setNewLink] = useState("");
   const [selectedTasks, setSelectedTasks] = useState<number[]>([]);
@@ -38,7 +40,10 @@ export const ToDoPage = () => {
       .select();
     if (error) return console.error(error);
     const inserted = data![0];
-    setTasks([...tasks, { id: inserted.id, text: inserted.text, link: inserted.link }]);
+    setTasks([
+      ...tasks,
+      { id: inserted.id, text: inserted.text, link: inserted.link },
+    ]);
     setNewTask("");
     setNewLink("");
   };
@@ -50,8 +55,6 @@ export const ToDoPage = () => {
       setSelectedTasks([...selectedTasks, id]);
     }
   };
-
-  
 
   const handleDeleteTask = async (taskId: number) => {
     const { error } = await supabase.from("todos").delete().eq("id", taskId);
@@ -93,7 +96,10 @@ export const ToDoPage = () => {
           <h2 className="text-xl font-bold mb-4 text-gray-900">Your Tasks</h2>
           <ul>
             {tasks.map((task) => (
-              <li key={task.id} className="text-lg mb-4 flex justify-between items-center">
+              <li
+                key={task.id}
+                className="text-lg mb-4 flex justify-between items-center"
+              >
                 <div>
                   <input
                     type="checkbox"
@@ -128,7 +134,7 @@ export const ToDoPage = () => {
 
       <div className="mt-12">
         <Link
-          to="/record-study-time"
+          to="/timer"
           className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg shadow-md flex items-center"
         >
           <span className="mr-2">

@@ -8,6 +8,8 @@ import { CreateGroupPage } from "./pages/CreateGroupPage";
 import { FindGroupPage } from "./pages/FindGroupPage";
 import { PostDetail } from "./components/PostDetail";
 import { ToDoPage } from "./pages/ToDoPage";
+import { TimerPage } from "./pages/TimerPage";
+import { CalendarPage } from "./pages/CalendarPage";
 import { CreateDiscussionPage } from "./pages/CreateDiscussionPage";
 import { DiscussionsPage } from "./pages/DiscussionsPage";
 import { DiscussionPage } from "./pages/DiscussionPage";
@@ -38,9 +40,10 @@ function App() {
           <Route path="/find-group" element={<FindGroupPage />} />
           <Route path="/group/:id" element={<GroupDetailWrapper />} />
           <Route path="/post/:id" element={<PostDetailWrapper />} />
-          {/* Timer and Calendar routes removed */}
-          <Route path="/todo" element={<ToDoPage />} /> 
-          <Route path="/discussion/create" element={<CreateDiscussionPage />} /> 
+          <Route path="/todo" element={<ToDoPage />} />
+          <Route path="/timer" element={<TimerPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/discussion/create" element={<CreateDiscussionPage />} />
           <Route path="/discussions" element={<DiscussionsPage />} />
           <Route path="/discussion/:id" element={<DiscussionPage />} />
         </Routes>
