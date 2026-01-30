@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
+import { useAuth } from "../context/AuthContext";
 
 export const TimerPage = () => {
+  const { user } = useAuth();
   const currentDate = new Date().toLocaleDateString("en-CA");
 
+  const storageKeyPrefix = user?.id ? `user-${user.id}` : "anon";
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [subject, setSubject] = useState("");
   const [activeSubject, setActiveSubject] = useState("");
   const [subjectTimes, setSubjectTimes] = useState<{ [key: string]: number }>(
-    JSON.parse(localStorage.getItem(`subjectTimes-${currentDate}`) || "{}")
+    JSON.parse(
+      localStorage.getItem(`subjectTimes-${storageKeyPrefix}-${currentDate}`) || "{}"
+    )
   );
   const [dailyTimes, setDailyTimes] = useState<{ [key: string]: number }>(
-    JSON.parse(localStorage.getItem(`dailyTimes-${currentDate}`) || "{}")
+    JSON.parse(
+      localStorage.getItem(`dailyTimes-${storageKeyPrefix}-${currentDate}`) || "{}"
+    )
   );
 
   const handleStart = () => {
@@ -26,6 +33,7 @@ export const TimerPage = () => {
     setIsRunning(false);
 
     if (activeSubject && time > 0) {
+      if (!user) return;
       console.log("Stopping timer for:", currentDate, "Subject:", activeSubject, "Time:", time);
 
       try {
@@ -34,6 +42,7 @@ export const TimerPage = () => {
           .select("id, time_spent")
           .eq("date", currentDate)
           .eq("subject", activeSubject)
+          .eq("user_id", user.id)
           .maybeSingle();
 
         if (fetchError) {
@@ -48,7 +57,8 @@ export const TimerPage = () => {
           const { error: updateError } = await supabase
             .from("study_times")
             .update({ time_spent: totalTime })
-            .eq("id", existingData.id);
+            .eq("id", existingData.id)
+            .eq("user_id", user.id);
 
           if (updateError) {
             console.error("Update failed:", updateError.message);
@@ -58,7 +68,14 @@ export const TimerPage = () => {
         } else {
           const { error: insertError } = await supabase
             .from("study_times")
-            .insert([{ date: currentDate, subject: activeSubject, time_spent: time }]);
+            .insert([
+              {
+                date: currentDate,
+                subject: activeSubject,
+                time_spent: time,
+                user_id: user.id,
+              },
+            ]);
 
           if (insertError) {
             console.error("Insert failed:", insertError.message);
@@ -76,7 +93,10 @@ export const TimerPage = () => {
     if (activeSubject) {
       const updatedSubjectTimes = { ...subjectTimes, [activeSubject]: 0 };
       setSubjectTimes(updatedSubjectTimes);
-      localStorage.setItem(`subjectTimes-${currentDate}`, JSON.stringify(updatedSubjectTimes));
+      localStorage.setItem(
+        `subjectTimes-${storageKeyPrefix}-${currentDate}`,
+        JSON.stringify(updatedSubjectTimes)
+      );
     }
     setTime(0);
     setIsRunning(false);
@@ -87,7 +107,10 @@ export const TimerPage = () => {
       if (!subjectTimes[subject]) {
         const updatedSubjectTimes = { ...subjectTimes, [subject]: 0 };
         setSubjectTimes(updatedSubjectTimes);
-        localStorage.setItem(`subjectTimes-${currentDate}`, JSON.stringify(updatedSubjectTimes));
+        localStorage.setItem(
+          `subjectTimes-${storageKeyPrefix}-${currentDate}`,
+          JSON.stringify(updatedSubjectTimes)
+        );
       }
       setSubject(""); // Clear the input field after pressing Enter
     }
@@ -97,7 +120,10 @@ export const TimerPage = () => {
     const updatedSubjectTimes = { ...subjectTimes };
     delete updatedSubjectTimes[subjectToDelete];
     setSubjectTimes(updatedSubjectTimes);
-    localStorage.setItem(`subjectTimes-${currentDate}`, JSON.stringify(updatedSubjectTimes));
+    localStorage.setItem(
+      `subjectTimes-${storageKeyPrefix}-${currentDate}`,
+      JSON.stringify(updatedSubjectTimes)
+    );
     if (activeSubject === subjectToDelete) {
       setActiveSubject("");
       setTime(0);
@@ -106,8 +132,15 @@ export const TimerPage = () => {
   };
 
   useEffect(() => {
-    const localSubjects = localStorage.getItem(`subjectTimes-${currentDate}`);
-    const localDaily = localStorage.getItem(`dailyTimes-${currentDate}`);
+    if (!user) {
+      return;
+    }
+    const localSubjects = localStorage.getItem(
+      `subjectTimes-${storageKeyPrefix}-${currentDate}`
+    );
+    const localDaily = localStorage.getItem(
+      `dailyTimes-${storageKeyPrefix}-${currentDate}`
+    );
 
     // Only fetch if no localStorage for today
     if (!localSubjects || !localDaily) {
@@ -115,6 +148,7 @@ export const TimerPage = () => {
         .from("study_times")
         .select("subject, time_spent")
         .eq("date", currentDate)
+        .eq("user_id", user.id)
         .then(({ data, error }) => {
           if (error) {
             console.error("Error fetching subjects from Supabase:", error.message);
@@ -128,16 +162,22 @@ export const TimerPage = () => {
             }, {});
 
             setSubjectTimes(restoredSubjects);
-            localStorage.setItem(`subjectTimes-${currentDate}`, JSON.stringify(restoredSubjects));
+            localStorage.setItem(
+              `subjectTimes-${storageKeyPrefix}-${currentDate}`,
+              JSON.stringify(restoredSubjects)
+            );
 
             const totalDailyTime = data.reduce((acc: number, entry) => acc + entry.time_spent, 0);
             const updatedDailyTimes = { [currentDate]: totalDailyTime };
             setDailyTimes(updatedDailyTimes);
-            localStorage.setItem(`dailyTimes-${currentDate}`, JSON.stringify(updatedDailyTimes));
+            localStorage.setItem(
+              `dailyTimes-${storageKeyPrefix}-${currentDate}`,
+              JSON.stringify(updatedDailyTimes)
+            );
           }
         });
     }
-  }, []);
+  }, [currentDate, storageKeyPrefix, user]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -156,14 +196,20 @@ export const TimerPage = () => {
         [activeSubject]: (subjectTimes[activeSubject] || 0) + time,
       };
       setSubjectTimes(updatedSubjectTimes);
-      localStorage.setItem(`subjectTimes-${currentDate}`, JSON.stringify(updatedSubjectTimes));
+      localStorage.setItem(
+        `subjectTimes-${storageKeyPrefix}-${currentDate}`,
+        JSON.stringify(updatedSubjectTimes)
+      );
 
       const updatedDailyTimes = {
         ...dailyTimes,
         [currentDate]: (dailyTimes[currentDate] || 0) + time,
       };
       setDailyTimes(updatedDailyTimes);
-      localStorage.setItem(`dailyTimes-${currentDate}`, JSON.stringify(updatedDailyTimes));
+      localStorage.setItem(
+        `dailyTimes-${storageKeyPrefix}-${currentDate}`,
+        JSON.stringify(updatedDailyTimes)
+      );
 
       setTime(0);
     }

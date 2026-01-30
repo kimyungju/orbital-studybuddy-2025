@@ -4,6 +4,7 @@ import "react-calendar/dist/Calendar.css";
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import { ErrorBoundary } from "react-error-boundary";
+import { useAuth } from "../context/AuthContext";
 
 const ErrorFallback = ({ error }: { error: Error }) => (
   <div
@@ -16,14 +17,20 @@ const ErrorFallback = ({ error }: { error: Error }) => (
 );
 
 export const CalendarPage = () => {
+  const { user } = useAuth();
   const [dailyTimes, setDailyTimes] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     const fetchStudyTimes = async () => {
+      if (!user) {
+        setDailyTimes({});
+        return;
+      }
       try {
         const { data, error } = await supabase
           .from("study_times")
-          .select("date, time_spent");
+          .select("date, time_spent")
+          .eq("user_id", user.id);
 
         if (error) {
           console.error("Supabase error:", error.message, error.details);
@@ -56,7 +63,7 @@ export const CalendarPage = () => {
     };
 
     fetchStudyTimes();
-  }, []);
+  }, [user]);
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("en-CA"); // Formats date as YYYY-MM-DD

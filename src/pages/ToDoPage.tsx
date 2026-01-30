@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
+import { useAuth } from "../context/AuthContext";
 
 export const ToDoPage = () => {
+  const { user } = useAuth();
   const [tasks, setTasks] = useState<
     { id: number; text: string; link?: string }[]
   >([]);
@@ -12,10 +14,15 @@ export const ToDoPage = () => {
 
   useEffect(() => {
     (async () => {
+      if (!user) {
+        setTasks([]);
+        return;
+      }
       // load Todos
       const { data: allTodos, error: todosError } = await supabase
         .from("todos")
-        .select("*");
+        .select("*")
+        .eq("user_id", user.id);
       if (todosError) return console.error(todosError);
       const todosArr = allTodos ?? [];
       setTasks(
@@ -27,16 +34,18 @@ export const ToDoPage = () => {
       // load Groups
       const { error: groupsError } = await supabase
         .from("todo-groups")
-        .select("*");
+        .select("*")
+        .eq("user_id", user.id);
       if (groupsError) return console.error(groupsError);
     })();
-  }, []);
+  }, [user]);
 
   const handleAddTask = async () => {
     if (!newTask.trim()) return;
+    if (!user) return;
     const { data, error } = await supabase
       .from("todos")
-      .insert([{ text: newTask, link: newLink || null }])
+      .insert([{ text: newTask, link: newLink || null, user_id: user.id }])
       .select();
     if (error) return console.error(error);
     const inserted = data![0];
@@ -57,7 +66,12 @@ export const ToDoPage = () => {
   };
 
   const handleDeleteTask = async (taskId: number) => {
-    const { error } = await supabase.from("todos").delete().eq("id", taskId);
+    if (!user) return;
+    const { error } = await supabase
+      .from("todos")
+      .delete()
+      .eq("id", taskId)
+      .eq("user_id", user.id);
     if (error) return console.error(error);
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
