@@ -115,14 +115,14 @@ export const CommentSection = ({ postId }: Props) => {
   if (isLoading) {
     return (
       <div className="text-center py-6">
-        <div className="text-slate-600">Loading comments...</div>
+        <div className="text-ink-light">Loading comments...</div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <h3 className="text-2xl font-semibold text-slate-800">
+      <h3 className="text-2xl font-display font-bold text-ink">
         Comments ({comments.length})
       </h3>
 
@@ -130,14 +130,14 @@ export const CommentSection = ({ postId }: Props) => {
       {user ? (
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label htmlFor="comment" className="block mb-2 font-medium text-slate-800">
+            <label htmlFor="comment" className="block mb-2 font-medium text-ink">
               Add a comment
             </label>
             <textarea
               id="comment"
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder:text-slate-400"
+              className="w-full border-2 border-border bg-cream text-ink p-3 rounded-lg focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors placeholder:text-ink-faint"
               rows={3}
               placeholder="Share your thoughts..."
               required
@@ -146,14 +146,14 @@ export const CommentSection = ({ postId }: Props) => {
           <button
             type="submit"
             disabled={isPending || !newComment.trim()}
-            className="bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+            className="bg-terracotta text-warm-white px-6 py-2 rounded-lg hover:bg-terracotta-light active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
           >
             {isPending ? "Adding..." : "Add Comment"}
           </button>
         </form>
       ) : (
         <div className="text-center p-6 border border-amber-300 rounded-lg bg-amber-50">
-          <p className="text-slate-700 font-medium">Please log in to leave a comment.</p>
+          <p className="text-ink font-medium">Please log in to leave a comment.</p>
         </div>
       )}
 
@@ -169,7 +169,7 @@ export const CommentSection = ({ postId }: Props) => {
             />
           ))
         ) : (
-          <div className="text-center py-8 text-slate-500">
+          <div className="text-center py-8 text-ink-muted">
             No comments yet. Be the first to share your thoughts!
           </div>
         )}

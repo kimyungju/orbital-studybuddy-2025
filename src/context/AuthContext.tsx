@@ -28,7 +28,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const signInWithGitHub = () => {
-    supabase.auth.signInWithOAuth({ provider: "github" });
+    supabase.auth.signInWithOAuth({
+      provider: "github",
+      options: { redirectTo: window.location.origin },
+    });
   };
 
   const signOut = () => {

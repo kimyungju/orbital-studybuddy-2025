@@ -76,14 +76,14 @@ export const DiscussionCommentSection = ({ discussionId }: Props) => {
 
   return (
     <div className="space-y-6">
-      <h3 className="text-2xl font-semibold text-slate-800">
+      <h3 className="text-2xl font-display font-semibold text-ink">
         Posts ({posts.length})
       </h3>
       <form onSubmit={handleSubmit} className="space-y-3">
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
-          className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder:text-slate-400"
+          className="w-full border-2 border-border bg-cream text-ink p-3 rounded-xl focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors placeholder:text-ink-faint"
           rows={3}
           placeholder="Share your thoughts..."
           required
@@ -91,7 +91,7 @@ export const DiscussionCommentSection = ({ discussionId }: Props) => {
         <button
           type="submit"
           disabled={isPending || !newComment.trim()}
-          className="bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+          className="bg-terracotta text-warm-white px-6 py-2 rounded-xl hover:bg-terracotta-light disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium active:scale-[0.98]"
         >
           {isPending ? "Adding..." : "Add Post"}
         </button>
@@ -99,15 +99,15 @@ export const DiscussionCommentSection = ({ discussionId }: Props) => {
       <div className="space-y-4">
         {posts.length > 0 ? (
           posts.map((post) => (
-            <div key={post.id} className="border-b border-slate-200 pb-2">
-              <div className="text-slate-700">{post.content}</div>
-              <div className="text-xs text-slate-500">
+            <div key={post.id} className="border-b border-border pb-2">
+              <div className="text-ink">{post.content}</div>
+              <div className="text-xs text-ink-muted">
                 {new Date(post.created_at).toLocaleString()}
               </div>
             </div>
           ))
         ) : (
-          <div className="text-center py-8 text-slate-500">
+          <div className="text-center py-8 text-ink-muted">
             No posts yet. Be the first to share your thoughts!
           </div>
         )}

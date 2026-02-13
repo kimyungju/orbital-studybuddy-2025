@@ -1,42 +1,163 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
 @import "tailwindcss";
 
+@theme {
+  --color-cream: #FDF8F0;
+  --color-cream-dark: #F5EDE0;
+  --color-parchment: #EDE4D3;
+  --color-warm-white: #FEFCF9;
+  --color-ink: #3D2E1F;
+  --color-ink-light: #6B5A4B;
+  --color-ink-muted: #9C8B7A;
+  --color-ink-faint: #BFB0A0;
+  --color-terracotta: #C4652A;
+  --color-terracotta-light: #D4834E;
+  --color-terracotta-dark: #A3501E;
+  --color-sage: #7A8F6D;
+  --color-sage-dark: #5F7252;
+  --color-caramel: #C49A4A;
+  --color-dusty-rose: #B8827A;
+  --color-border: #E0D5C7;
+  --color-border-light: #EDE4D8;
+  --color-error: #B84233;
+  --color-error-bg: #FDF0EE;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Source Serif 4', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --shadow-warm-sm: 0 1px 2px rgba(61, 46, 31, 0.06);
+  --shadow-warm-md: 0 4px 12px rgba(61, 46, 31, 0.08);
+  --shadow-warm-lg: 0 8px 24px rgba(61, 46, 31, 0.10);
+
+  --animate-fade-in: fade-in 0.5s ease both;
+  --animate-slide-up: slide-up 0.5s ease both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer base {
+  body {
+    font-family: 'Source Serif 4', serif;
+    color: #3D2E1F;
+    background-color: #FDF8F0;
+  }
+}
+
+/* Paper grain overlay */
+#root::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* Existing animations */
 @layer utilities {
   @keyframes blink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
   .animate-blink {
     animation: blink 0.8s step-end infinite;
   }
   @keyframes loading {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(250%);
-    }
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(250%); }
   }
   .animate-loading-bar {
     animation: loading 0.8s ease infinite;
   }
 }
 
+/* Stagger delay utilities */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+/* Scroll reveal */
 .reveal {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
-
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* React Calendar warm theme */
+.react-calendar {
+  border: none !important;
+  background: #FEFCF9 !important;
+  font-family: 'Source Serif 4', serif !important;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+}
+.react-calendar__navigation button {
+  color: #3D2E1F !important;
+  font-family: 'Fraunces', serif !important;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.react-calendar__navigation button:hover,
+.react-calendar__navigation button:focus {
+  background-color: #F5EDE0 !important;
+  border-radius: 0.5rem;
+}
+.react-calendar__month-view__weekdays {
+  color: #9C8B7A !important;
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.react-calendar__month-view__weekdays abbr {
+  text-decoration: none !important;
+}
+.react-calendar__tile {
+  color: #3D2E1F !important;
+  border-radius: 0.5rem !important;
+  padding: 0.5em !important;
+}
+.react-calendar__tile:hover {
+  background-color: #F5EDE0 !important;
+}
+.react-calendar__tile--now {
+  background-color: #EDE4D3 !important;
+  font-weight: 700;
+}
+.react-calendar__tile--active,
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background-color: #C4652A !important;
+  color: #FEFCF9 !important;
+  font-weight: 600;
+}
+.react-calendar__tile--hasActive {
+  background-color: #D4834E !important;
 }

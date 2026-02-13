@@ -24,7 +24,7 @@ export const DeleteButton = ({ postId, onDeleted }: DeleteButtonProps) => {
           mutate();
         }
       }}
-      className="bg-red-500 text-white px-3 py-1 rounded mt-2"
+      className="bg-transparent text-error border border-error/30 hover:bg-error-bg active:scale-[0.98] px-3 py-1 rounded mt-2 transition-colors"
       disabled={isPending}
     >
       {isPending ? "Deleting..." : "Delete Group"}

@@ -43,46 +43,46 @@ export const SignupPage = () => {
 
   if (checkingSession) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-600">Checking authentication…</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-ink-light">Checking authentication…</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 animate-fade-in">
       <div className="absolute top-8 left-8">
-        <Link to="/login" className="text-white underline hover:text-indigo-200">
+        <Link to="/login" className="text-terracotta underline hover:text-terracotta-light">
           &larr; Back to Log In
         </Link>
       </div>
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
+      <div className="bg-warm-white rounded-xl border border-border shadow-warm-lg max-w-md w-full p-8">
+        <h2 className="text-3xl font-display font-semibold text-ink mb-6 text-center">
           Sign Up
         </h2>
         <div className="flex flex-col space-y-4">
           <button
             onClick={handleSignUpWithGitHub}
-            className="w-full py-3 bg-gray-800 hover:bg-gray-900 text-white font-semibold rounded-lg transition"
+            className="w-full py-3 bg-ink hover:bg-ink-light text-cream font-semibold rounded-lg transition-all duration-200 active:scale-[0.98]"
           >
             Sign Up with GitHub
           </button>
           <button
             onClick={handleSignUpWithGoogle}
-            className="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition"
+            className="w-full py-3 bg-warm-white border border-border text-ink hover:shadow-warm-md font-semibold rounded-lg transition-all duration-200 active:scale-[0.98]"
           >
             Sign Up with Google
           </button>
           <button
             onClick={handleSignUpWithEmail}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
+            className="w-full py-3 bg-terracotta hover:bg-terracotta-light text-warm-white font-semibold rounded-lg transition-all duration-200 active:scale-[0.98]"
           >
             Sign Up with Email
           </button>
         </div>
-        <div className="mt-6 text-center text-gray-600">
+        <div className="mt-6 text-center text-ink-light">
           Already have an account?{" "}
-          <Link to="/login" className="text-indigo-600 hover:underline font-semibold">
+          <Link to="/login" className="text-terracotta hover:underline font-semibold">
             Log In
           </Link>
         </div>

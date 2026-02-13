@@ -42,7 +42,7 @@ export const DiscussionPostCreate = ({ discussionId }: { discussionId: number })
             if (content.trim()) mutate(content);
           }
         }}
-        className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder:text-slate-400"
+        className="w-full border-2 border-border bg-cream text-ink p-3 rounded-xl focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors placeholder:text-ink-faint"
         rows={4}
         placeholder="Type your message..."
         required
@@ -50,12 +50,12 @@ export const DiscussionPostCreate = ({ discussionId }: { discussionId: number })
       <button
         type="submit"
         disabled={isPending || !content.trim()}
-        className="bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+        className="bg-terracotta text-warm-white px-6 py-2 rounded-xl hover:bg-terracotta-light disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium active:scale-[0.98]"
       >
         {isPending ? "Sending..." : "Send Message"}
       </button>
       {isError && (
-        <div className="text-red-700 text-sm mt-2 bg-red-100 p-3 rounded-lg border border-red-300">
+        <div className="text-error text-sm mt-2 bg-error-bg p-3 rounded-xl border border-error/30">
           Error sending message: {error?.message}
         </div>
       )}

@@ -9,7 +9,7 @@ import { useAuth } from "../context/AuthContext";
 const ErrorFallback = ({ error }: { error: Error }) => (
   <div
     role="alert"
-    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+    className="bg-error-bg border border-error/30 text-error rounded-xl p-4"
   >
     <strong className="font-bold">Error:</strong>
     <span className="block sm:inline">{error.message}</span>
@@ -81,26 +81,18 @@ export const CalendarPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-500 via-blue-600 to-purple-500 flex flex-col items-center pt-20">
-      <h1 className="text-4xl font-bold text-white mb-12">Study Calendar</h1>
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+    <div className="min-h-screen flex flex-col items-center pt-20 animate-fade-in">
+      <h1 className="text-4xl font-display font-extrabold text-ink mb-12">Study Calendar</h1>
+      <div className="bg-warm-white rounded-xl border border-border shadow-warm-md p-6 max-w-lg mx-auto">
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <Calendar
             locale="en"
-            tileClassName={({ date, view }) => {
-              const currentDate = formatDate(new Date());
-              if (view === "month" && formatDate(date) === currentDate) {
-                return "bg-yellow-500 text-black font-bold rounded-lg";
-              }
-              return "text-gray-900"; // Make other dates darker
-            }}
-            className="text-gray-900" // Make year and days of the week darker
             tileContent={({ date, view }) => {
               if (view === "month") {
                 const formattedDate = formatDate(date);
                 const studyTime = dailyTimes[formattedDate] || 0;
                 return studyTime > 0 ? (
-                  <div className="text-xs text-center text-blue-700 font-bold">
+                  <div className="text-xs text-center text-terracotta font-mono font-bold">
                     {formatStudyTime(studyTime)}
                   </div>
                 ) : null;
@@ -113,7 +105,7 @@ export const CalendarPage = () => {
       <div className="mt-12">
         <Link
           to="/timer"
-          className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg shadow-md flex items-center"
+          className="px-6 py-3 bg-terracotta hover:bg-terracotta-light text-warm-white font-bold rounded-lg shadow-warm-md flex items-center active:scale-[0.98]"
         >
           <span className="mr-2">
             <i className="fas fa-clock"></i>

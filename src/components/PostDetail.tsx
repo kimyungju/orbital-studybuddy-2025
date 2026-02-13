@@ -52,7 +52,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
   if (!postId || isNaN(postId)) {
     return (
       <div className="text-center py-12">
-        <div className="text-red-600 bg-red-50 p-6 rounded-lg max-w-md mx-auto">
+        <div className="text-error bg-error-bg p-6 rounded-xl max-w-md mx-auto">
           Invalid post ID. Please check the URL and try again.
         </div>
       </div>
@@ -62,8 +62,8 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
   if (isLoading) {
     return (
       <div className="text-center py-12">
-        <div className="text-slate-600 text-lg">Loading post...</div>
-        <div className="text-slate-500 text-sm mt-2">Post ID: {postId}</div>
+        <div className="text-ink-light text-lg">Loading post...</div>
+        <div className="text-ink-muted text-sm mt-2">Post ID: {postId}</div>
       </div>
     );
   }
@@ -71,13 +71,13 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
   if (error) {
     return (
       <div className="text-center py-12">
-        <div className="text-red-600 bg-red-50 p-6 rounded-lg max-w-md mx-auto">
+        <div className="text-error bg-error-bg p-6 rounded-xl max-w-md mx-auto">
           <p className="font-semibold mb-2">Error loading post</p>
           <p className="text-sm">{error.message}</p>
-          <p className="text-xs text-gray-500 mt-2">Post ID: {postId}</p>
+          <p className="text-xs text-ink-muted mt-2">Post ID: {postId}</p>
           <button
             onClick={() => navigate("/find-group")}
-            className="mt-4 bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 transition-colors"
+            className="mt-4 bg-terracotta text-warm-white px-4 py-2 rounded-xl hover:bg-terracotta-light active:scale-[0.98] transition-all duration-200"
           >
             Back to Groups
           </button>
@@ -89,14 +89,14 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
   if (!data) {
     return (
       <div className="text-center py-12">
-        <div className="text-slate-600 bg-slate-50 p-6 rounded-lg max-w-md mx-auto">
+        <div className="text-ink-light bg-cream-dark p-6 rounded-xl max-w-md mx-auto">
           <p className="font-semibold mb-2">Post not found</p>
           <p className="text-sm">
             The post you're looking for doesn't exist or has been removed.
           </p>
           <button
             onClick={() => navigate("/find-group")}
-            className="mt-4 bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 transition-colors"
+            className="mt-4 bg-terracotta text-warm-white px-4 py-2 rounded-xl hover:bg-terracotta-light active:scale-[0.98] transition-all duration-200"
           >
             Back to Groups
           </button>
@@ -109,8 +109,8 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
   // Discussion posts are handled separately in DiscussionCommentSection
 
   return (
-    <div className="max-w-4xl mx-auto bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-sky-200 p-8 space-y-6">
-      <h2 className="text-5xl font-bold mb-6 text-center bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent">
+    <div className="max-w-4xl mx-auto bg-warm-white rounded-xl shadow-warm-md border border-border p-8 space-y-6 animate-fade-in">
+      <h2 className="text-5xl font-display font-bold mb-6 text-center text-ink">
         {data.title}
       </h2>
       {/* Note: This component is for group posts, not discussion posts */}
@@ -120,7 +120,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
           <img
             src={data.image_url}
             alt={data.title}
-            className="mt-4 rounded-lg object-cover w-full max-w-2xl mx-auto border border-sky-100 shadow-sm"
+            className="mt-4 rounded-xl object-cover w-full max-w-2xl mx-auto border border-border-light shadow-warm-sm"
             onError={(e) => {
               console.log("Image failed to load:", data.image_url);
               (e.target as HTMLImageElement).style.display = "none";
@@ -130,13 +130,13 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
       )}
 
       <div className="prose prose-slate max-w-none">
-        <p className="text-slate-700 text-lg leading-relaxed whitespace-pre-wrap">
+        <p className="text-ink text-lg leading-relaxed whitespace-pre-wrap">
           {data.content}
         </p>
       </div>
 
-      <div className="flex items-center justify-between pt-4 border-t border-sky-200">
-        <p className="text-slate-500 text-sm">
+      <div className="flex items-center justify-between pt-4 border-t border-border">
+        <p className="text-ink-muted text-sm">
           Posted on: {new Date(data.created_at).toLocaleDateString()}
         </p>
 
@@ -152,7 +152,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({ postId }) => {
         <LikeButton postId={postId} />
       </div>
 
-      <div className="pt-6 border-t border-sky-200">
+      <div className="pt-6 border-t border-border">
         <CommentSection postId={postId} />
       </div>
     </div>

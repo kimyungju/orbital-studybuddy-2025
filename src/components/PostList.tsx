@@ -56,7 +56,7 @@ export const PostList = () => {
   if (isLoading) {
     return (
       <div className="text-center py-12">
-        <div className="text-slate-600 text-lg">Loading study groups...</div>
+        <div className="text-ink-light text-lg">Loading study groups...</div>
       </div>
     );
   }
@@ -64,7 +64,7 @@ export const PostList = () => {
   if (error) {
     return (
       <div className="text-center py-12">
-        <div className="text-red-600 bg-red-50 p-6 rounded-lg max-w-md mx-auto">
+        <div className="text-error bg-error-bg p-6 rounded-xl max-w-md mx-auto">
           Error loading groups: {error.message}
         </div>
       </div>
@@ -73,11 +73,11 @@ export const PostList = () => {
 
   if (!data || data.length === 0) {
     return (
-      <div className="text-center py-12 border-2 border-dashed border-sky-200 rounded-lg bg-sky-50/50">
-        <p className="text-slate-600 text-lg mb-2">
+      <div className="text-center py-12 border-2 border-dashed border-border rounded-xl bg-cream-dark">
+        <p className="text-ink-light text-lg mb-2">
           No study groups available yet.
         </p>
-        <p className="text-slate-500 text-sm">
+        <p className="text-ink-muted text-sm">
           Be the first to create a study group!
         </p>
       </div>

@@ -85,17 +85,17 @@ export const CommentItem = ({ comment, postId, depth }: Props) => {
 
   return (
     <div className={`${indentClass} space-y-3`}>
-      <div className="bg-white/70 backdrop-blur-sm border border-slate-200 rounded-lg p-4 shadow-sm">
+      <div className="bg-warm-white backdrop-blur-sm border border-border rounded-lg p-4 shadow-warm-sm">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-semibold">
+            <div className="w-8 h-8 bg-terracotta rounded-full flex items-center justify-center">
+              <span className="text-warm-white text-sm font-semibold">
                 {comment.author.charAt(0).toUpperCase()}
               </span>
             </div>
             <div>
-              <span className="font-medium text-slate-800">{comment.author}</span>
-              <span className="text-slate-500 text-sm ml-2">
+              <span className="font-display font-semibold text-ink">{comment.author}</span>
+              <span className="text-ink-muted text-sm ml-2">
                 {formatTimeAgo(comment.created_at)}
               </span>
             </div>
@@ -109,14 +109,14 @@ export const CommentItem = ({ comment, postId, depth }: Props) => {
           )}
         </div>
         
-        <p className="text-slate-700 leading-relaxed whitespace-pre-wrap mb-3">
+        <p className="text-ink leading-relaxed whitespace-pre-wrap mb-3">
           {comment.content}
         </p>
         
         {user && (
           <button
             onClick={() => setShowReplyForm(!showReplyForm)}
-            className="text-sky-600 hover:text-sky-700 text-sm font-medium transition-colors"
+            className="text-terracotta hover:text-terracotta-light text-sm font-medium transition-colors"
           >
             {showReplyForm ? "Cancel" : "Reply"}
           </button>
@@ -127,7 +127,7 @@ export const CommentItem = ({ comment, postId, depth }: Props) => {
             <textarea
               value={replyText}
               onChange={(e) => setReplyText(e.target.value)}
-              className="w-full border-2 border-slate-300 bg-white text-slate-800 p-3 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors placeholder:text-slate-400"
+              className="w-full border-2 border-border bg-cream text-ink p-3 rounded-lg focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors placeholder:text-ink-faint"
               placeholder="Write a reply..."
               rows={3}
               required
@@ -136,7 +136,7 @@ export const CommentItem = ({ comment, postId, depth }: Props) => {
               <button
                 type="submit"
                 disabled={isPending || !replyText.trim()}
-                className="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                className="bg-terracotta text-warm-white px-4 py-2 rounded-lg hover:bg-terracotta-light active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
               >
                 {isPending ? "Replying..." : "Reply"}
               </button>
@@ -146,7 +146,7 @@ export const CommentItem = ({ comment, postId, depth }: Props) => {
                   setShowReplyForm(false);
                   setReplyText("");
                 }}
-                className="bg-slate-500 text-white px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors text-sm font-medium"
+                className="bg-ink-muted text-warm-white px-4 py-2 rounded-lg hover:bg-ink-light transition-colors text-sm font-medium"
               >
                 Cancel
               </button>

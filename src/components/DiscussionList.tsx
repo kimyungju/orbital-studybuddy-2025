@@ -26,10 +26,10 @@ export const DiscussionList = () => {
   });
 
   if (isLoading)
-    return <div className="text-center py-4">Loading discussions...</div>;
+    return <div className="text-center py-4 text-ink-muted">Loading discussions...</div>;
   if (error)
     return (
-      <div className="text-center text-red-500 py-4">
+      <div className="text-center text-error py-4">
         Error: {error.message}
       </div>
     );
@@ -39,15 +39,15 @@ export const DiscussionList = () => {
       {data?.map((discussion) => (
         <div
           key={discussion.id}
-          className="border border-white/10 p-4 rounded hover:-translate-y-1 transition transform"
+          className="bg-warm-white border border-border rounded-xl p-4 hover:shadow-warm-md transition-all duration-300 hover:-translate-y-0.5"
         >
           <Link
             to={`/discussion/${discussion.id}`}
-            className="text-2xl font-bold text-purple-500 hover:underline"
+            className="text-2xl font-bold text-terracotta hover:underline"
           >
             {discussion.name}
           </Link>
-          <p className="text-gray-400 mt-2">{discussion.description}</p>
+          <p className="text-ink-muted mt-2">{discussion.description}</p>
         </div>
       ))}
     </div>

@@ -7,14 +7,14 @@ export const LandingPage = () => {
   // If user is logged in, redirect to home
   if (user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-emerald-50 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4 animate-fade-in">
         <div className="text-center">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-display font-extrabold mb-6 text-ink">
             Welcome back to StudyBuddy!
           </h1>
           <Link
             to="/home"
-            className="bg-gradient-to-r from-sky-600 to-emerald-600 text-white px-8 py-3 rounded-lg hover:from-sky-700 hover:to-emerald-700 transition-all duration-200 font-medium shadow-md"
+            className="bg-terracotta text-warm-white px-8 py-3 rounded-lg hover:bg-terracotta-light active:scale-[0.98] transition-all duration-200 font-medium shadow-warm-md"
           >
             Go to Dashboard
           </Link>
@@ -24,51 +24,51 @@ export const LandingPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-emerald-50 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 animate-fade-in">
       <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent">
+        <h1 className="text-6xl font-display font-extrabold mb-6 text-ink">
           StudyBuddy
         </h1>
-        
-        <p className="text-2xl text-slate-600 mb-8 leading-relaxed">
+
+        <p className="text-2xl text-ink-light mb-8 leading-relaxed">
           Connect with fellow students, join study groups, and achieve your academic goals together.
         </p>
-        
-        <p className="text-lg text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed">
-          Create or join study groups, track your progress, manage your tasks, and collaborate 
+
+        <p className="text-lg text-ink-muted mb-12 max-w-2xl mx-auto leading-relaxed">
+          Create or join study groups, track your progress, manage your tasks, and collaborate
           with peers in a stress-free, supportive learning environment.
         </p>
-        
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             to="/signup"
-            className="bg-gradient-to-r from-sky-600 to-emerald-600 text-white px-8 py-4 rounded-lg hover:from-sky-700 hover:to-emerald-700 transition-all duration-200 font-medium text-lg shadow-md"
+            className="bg-terracotta hover:bg-terracotta-light text-warm-white px-8 py-4 rounded-lg active:scale-[0.98] transition-all duration-200 font-medium text-lg shadow-warm-md"
           >
             Get Started
           </Link>
-          
+
           <Link
             to="/login"
-            className="bg-white/70 backdrop-blur-sm text-slate-700 px-8 py-4 rounded-lg hover:bg-white border border-sky-200 transition-all duration-200 font-medium text-lg shadow-sm"
+            className="bg-warm-white border border-border text-ink px-8 py-4 rounded-lg hover:shadow-warm-md transition-all duration-200 font-medium text-lg shadow-warm-sm"
           >
             Sign In
           </Link>
         </div>
-        
+
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white/50 backdrop-blur-sm p-6 rounded-lg border border-sky-100">
-            <h3 className="text-xl font-semibold text-slate-700 mb-3">Study Groups</h3>
-            <p className="text-slate-600">Create and join study groups for collaborative learning</p>
+          <div className="bg-warm-white p-6 rounded-xl border border-border shadow-warm-sm animate-slide-up transition-all duration-300 hover:-translate-y-0.5">
+            <h3 className="text-xl font-semibold text-ink mb-3">Study Groups</h3>
+            <p className="text-ink-light">Create and join study groups for collaborative learning</p>
           </div>
-          
-          <div className="bg-white/50 backdrop-blur-sm p-6 rounded-lg border border-emerald-100">
-            <h3 className="text-xl font-semibold text-slate-700 mb-3">Discussions</h3>
-            <p className="text-slate-600">Engage in topic-focused discussions with peers</p>
+
+          <div className="bg-warm-white p-6 rounded-xl border border-border shadow-warm-sm animate-slide-up [animation-delay:100ms] transition-all duration-300 hover:-translate-y-0.5">
+            <h3 className="text-xl font-semibold text-ink mb-3">Discussions</h3>
+            <p className="text-ink-light">Engage in topic-focused discussions with peers</p>
           </div>
-          
-          <div className="bg-white/50 backdrop-blur-sm p-6 rounded-lg border border-amber-100">
-            <h3 className="text-xl font-semibold text-slate-700 mb-3">Productivity Tools</h3>
-            <p className="text-slate-600">Track time, manage tasks, and plan your studies</p>
+
+          <div className="bg-warm-white p-6 rounded-xl border border-border shadow-warm-sm animate-slide-up [animation-delay:200ms] transition-all duration-300 hover:-translate-y-0.5">
+            <h3 className="text-xl font-semibold text-ink mb-3">Productivity Tools</h3>
+            <p className="text-ink-light">Track time, manage tasks, and plan your studies</p>
           </div>
         </div>
       </div>

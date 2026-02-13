@@ -7,11 +7,11 @@ export const DiscussionPage = () => {
   const discussionId = id ? parseInt(id) : NaN;
 
   if (isNaN(discussionId)) {
-    return <div>Invalid discussion ID</div>;
+    return <div className="text-ink-muted">Invalid discussion ID</div>;
   }
 
   return (
-    <div className="pt-20">
+    <div className="pt-20 animate-fade-in">
       <DiscussionCommentSection discussionId={discussionId} />
     </div>
   );

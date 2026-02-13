@@ -100,7 +100,7 @@ export const LikeButton = ({ postId }: Props) => {
       <button
         onClick={() => mutate(1)}
         className={`px-3 py-1 cursor-pointer rounded transition-colors duration-150 ${
-          userVote === 1 ? "bg-green-500 text-white" : "bg-gray-200 text-black"
+          userVote === 1 ? "bg-sage text-warm-white" : "bg-cream-dark border border-border text-ink-muted hover:bg-parchment"
         }`}
       >
         👍 {likes}
@@ -108,7 +108,7 @@ export const LikeButton = ({ postId }: Props) => {
       <button
         onClick={() => mutate(-1)}
         className={`px-3 py-1 cursor-pointer rounded transition-colors duration-150 ${
-          userVote === -1 ? "bg-red-500 text-white" : "bg-gray-200 text-black"
+          userVote === -1 ? "bg-dusty-rose text-warm-white" : "bg-cream-dark border border-border text-ink-muted hover:bg-parchment"
         }`}
       >
         👎 {dislikes}

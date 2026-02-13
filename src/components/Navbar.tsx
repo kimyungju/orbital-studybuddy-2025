@@ -9,12 +9,12 @@ export const Navbar = () => {
 
   const getLinkClasses = (path: string) =>
     isActive(path)
-      ? "text-sky-700 hover:text-sky-800 border-b-4 border-sky-600 pb-1 font-semibold"
-      : "text-slate-600 hover:text-sky-700 hover:border-b-4 hover:border-sky-500 border-b-4 border-transparent pb-1 transition-colors";
+      ? "text-terracotta border-b-4 border-terracotta pb-1 font-semibold font-body"
+      : "text-ink-light hover:text-terracotta hover:border-b-4 hover:border-terracotta-light border-b-4 border-transparent pb-1 transition-colors font-body";
 
   return (
-    <nav className="bg-white/80 backdrop-blur-sm shadow-lg fixed top-0 left-0 right-0 z-50 border-b border-sky-100">
-      <div className="container mx-auto px-4 py-3">
+    <nav className="bg-warm-white/90 backdrop-blur-sm shadow-warm-md fixed top-0 left-0 right-0 z-50 border-b border-border-light">
+      <div className="max-w-6xl mx-auto px-6 py-3">
         <div className="flex items-center justify-between">
           {/* Logo/Brand */}
           <Link to="/" className="flex items-center space-x-2">
@@ -23,8 +23,8 @@ export const Navbar = () => {
               alt="StudyBuddy Logo"
               className="w-8 h-8 rounded-full object-cover"
             />
-            <span className="text-2xl font-bold text-slate-700">
-              Study<span className="text-sky-600">Buddy</span>
+            <span className="text-2xl font-bold font-display text-ink">
+              Study<span className="text-terracotta">Buddy</span>
             </span>
           </Link>
 
@@ -60,10 +60,10 @@ export const Navbar = () => {
           <div className="flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-3">
-                <span className="text-slate-600 font-medium">{user.email}</span>
+                <span className="text-ink-light font-medium font-body">{user.email}</span>
                 <button
                   onClick={signOut}
-                  className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg transition-colors font-medium"
+                  className="bg-ink hover:bg-ink-light text-cream px-4 py-2 rounded-lg transition-colors font-medium active:scale-[0.98]"
                 >
                   Sign Out
                 </button>
@@ -72,13 +72,13 @@ export const Navbar = () => {
               <div className="flex space-x-3">
                 <Link
                   to="/signup"
-                  className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg transition-colors font-medium"
+                  className="bg-terracotta hover:bg-terracotta-light text-warm-white px-4 py-2 rounded-lg transition-colors font-medium active:scale-[0.98]"
                 >
                   Sign Up
                 </Link>
                 <Link
                   to="/login"
-                  className="text-slate-600 hover:text-sky-700 px-4 py-2 font-medium transition-colors"
+                  className="text-ink-light hover:text-terracotta px-4 py-2 font-medium transition-colors"
                 >
                   Log In
                 </Link>

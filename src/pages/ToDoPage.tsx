@@ -77,37 +77,37 @@ export const ToDoPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-pink-600 to-red-500 flex flex-col items-center pt-20 overflow-y-auto">
-      <h1 className="text-4xl font-bold text-white mb-12">To-Do List</h1>
+    <div className="min-h-screen flex flex-col items-center pt-20 overflow-y-auto animate-fade-in">
+      <h1 className="text-4xl font-display font-extrabold text-ink mb-12">To-Do List</h1>
       <div className="flex justify-between items-start w-full max-w-5xl gap-8">
         {/* Add a Task Section */}
-        <div className="bg-white rounded-lg shadow-lg p-6 w-1/2">
-          <h2 className="text-xl font-bold mb-4 text-gray-900">Add a Task</h2>
+        <div className="bg-warm-white rounded-xl border border-border shadow-warm-md p-6 w-1/2">
+          <h2 className="text-xl font-bold mb-4 text-ink">Add a Task</h2>
           <input
             type="text"
             placeholder="Enter task"
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
-            className="px-4 py-2 rounded-lg shadow-md text-lg w-full mb-4 text-gray-800"
+            className="px-4 py-2 rounded-lg shadow-warm-sm text-lg w-full mb-4 text-ink border-border bg-cream focus:ring-terracotta/30 focus:border-terracotta placeholder:text-ink-faint"
           />
           <input
             type="text"
             placeholder="Enter link (optional)"
             value={newLink}
             onChange={(e) => setNewLink(e.target.value)}
-            className="px-4 py-2 rounded-lg shadow-md text-lg w-full mb-4 text-gray-800"
+            className="px-4 py-2 rounded-lg shadow-warm-sm text-lg w-full mb-4 text-ink border-border bg-cream focus:ring-terracotta/30 focus:border-terracotta placeholder:text-ink-faint"
           />
           <button
             onClick={handleAddTask}
-            className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg shadow-md w-full"
+            className="px-6 py-3 bg-sage hover:bg-sage-dark text-warm-white font-bold rounded-lg shadow-warm-sm w-full active:scale-[0.98]"
           >
             Add Task
           </button>
         </div>
 
         {/* Your Tasks Section */}
-        <div className="bg-white rounded-lg shadow-lg p-6 w-1/2">
-          <h2 className="text-xl font-bold mb-4 text-gray-900">Your Tasks</h2>
+        <div className="bg-warm-white rounded-xl border border-border shadow-warm-md p-6 w-1/2">
+          <h2 className="text-xl font-bold mb-4 text-ink">Your Tasks</h2>
           <ul>
             {tasks.map((task) => (
               <li
@@ -119,24 +119,24 @@ export const ToDoPage = () => {
                     type="checkbox"
                     checked={selectedTasks.includes(task.id)}
                     onChange={() => handleToggleTaskSelection(task.id)}
-                    className="mr-2"
+                    className="mr-2 accent-terracotta"
                   />
                   {task.link ? (
                     <a
                       href={task.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-500 underline"
+                      className="text-terracotta hover:text-terracotta-light underline"
                     >
                       {task.text}
                     </a>
                   ) : (
-                    <span className="text-gray-900">{task.text}</span>
+                    <span className="text-ink">{task.text}</span>
                   )}
                 </div>
                 <button
                   onClick={() => handleDeleteTask(task.id)}
-                  className="px-2 py-1 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg shadow-md text-sm"
+                  className="px-2 py-1 bg-transparent text-error border border-error/30 hover:bg-error-bg font-bold rounded-lg shadow-warm-sm text-sm active:scale-[0.98]"
                 >
                   Delete
                 </button>
@@ -149,7 +149,7 @@ export const ToDoPage = () => {
       <div className="mt-12">
         <Link
           to="/timer"
-          className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg shadow-md flex items-center"
+          className="px-6 py-3 bg-terracotta hover:bg-terracotta-light text-warm-white font-bold rounded-lg shadow-warm-md flex items-center active:scale-[0.98]"
         >
           <span className="mr-2">
             <i className="fas fa-clock"></i>

@@ -225,72 +225,72 @@ export const TimerPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 flex flex-col items-center pt-20">
-      <h1 className="text-4xl font-bold text-gray-900 mb-12">Record Study Time</h1>
+    <div className="min-h-screen flex flex-col items-center pt-20 animate-fade-in">
+      <h1 className="text-4xl font-display font-extrabold text-ink mb-12">Record Study Time</h1>
       <div className="flex justify-between items-start w-full max-w-5xl gap-8">
-        <div className="bg-white rounded-lg shadow-lg p-6 w-1/2">
-          <h2 className="text-xl font-bold mb-4 text-gray-900">Enter Subject</h2>
+        <div className="bg-warm-white rounded-xl border border-border shadow-warm-md p-6 w-1/2">
+          <h2 className="text-xl font-bold mb-4 text-ink">Enter Subject</h2>
           <input
             type="text"
             placeholder="Enter subject and press Enter"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             onKeyPress={handleSubjectKeyPress}
-            className="px-4 py-2 rounded-lg shadow-md text-gray-900 w-full mb-6"
+            className="px-4 py-2 rounded-lg shadow-warm-sm text-ink w-full mb-6 border-border bg-cream focus:ring-terracotta/30 focus:border-terracotta placeholder:text-ink-faint"
           />
           <div className="text-center mb-6">
-            <div className="text-2xl font-bold mb-4 text-gray-900">
-              Active Subject: <span className="text-blue-700">{activeSubject || "None"}</span>
+            <div className="text-2xl font-bold mb-4 text-ink">
+              Active Subject: <span className="text-terracotta font-display">{activeSubject || "None"}</span>
             </div>
-            <div className="text-2xl font-bold text-gray-900">
-              Time: <span className="text-green-700">{formatTime(time)}</span>
+            <div className="text-2xl font-bold text-ink">
+              Time: <span className="text-sage-dark font-mono">{formatTime(time)}</span>
             </div>
           </div>
           <div className="text-center">
-            <h2 className="text-xl font-bold mb-4 text-gray-900">Timer Controls</h2>
+            <h2 className="text-xl font-bold mb-4 text-ink">Timer Controls</h2>
             <div className="flex space-x-4 justify-center">
               <button
                 onClick={handleStart}
                 disabled={!activeSubject || isRunning}
-                className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg shadow-md"
+                className="px-6 py-3 bg-sage hover:bg-sage-dark text-warm-white font-bold rounded-lg shadow-warm-sm active:scale-[0.98]"
               >
                 Start
               </button>
               <button
                 onClick={handleStop}
                 disabled={!isRunning}
-                className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg shadow-md"
+                className="px-6 py-3 bg-dusty-rose hover:opacity-90 text-warm-white font-bold rounded-lg shadow-warm-sm active:scale-[0.98]"
               >
                 Stop
               </button>
               <button
                 onClick={handleReset}
                 disabled={!activeSubject}
-                className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white font-bold rounded-lg shadow-md"
+                className="px-6 py-3 bg-ink-muted hover:bg-ink-light text-warm-white font-bold rounded-lg shadow-warm-sm active:scale-[0.98]"
               >
                 Reset
               </button>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-6 w-1/2">
-          <h2 className="text-xl font-bold mb-4 text-gray-900">Time Spent Per Subject</h2>
+        <div className="bg-warm-white rounded-xl border border-border shadow-warm-md p-6 w-1/2">
+          <h2 className="text-xl font-bold mb-4 text-ink">Time Spent Per Subject</h2>
           <ul>
             {Object.entries(subjectTimes).map(([subject, time]) => (
               <li key={subject} className="text-lg mb-2 flex justify-between items-center">
                 <span>
-                  <span className="font-bold text-gray-900">{subject}:</span> <span className="text-gray-900">{formatTime(time)}</span>
+                  <span className="font-bold text-ink">{subject}:</span> <span className="text-ink font-mono">{formatTime(time)}</span>
                 </span>
                 <div className="flex space-x-2">
                   <button
                     onClick={() => setActiveSubject(subject)}
-                    className="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg shadow-md text-sm"
+                    className="px-2 py-1 bg-caramel hover:opacity-90 text-warm-white font-bold rounded-lg shadow-warm-sm text-sm active:scale-[0.98]"
                   >
                     Select
                   </button>
                   <button
                     onClick={() => handleDeleteSubject(subject)}
-                    className="px-2 py-1 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg shadow-md text-sm"
+                    className="px-2 py-1 bg-transparent text-error border border-error/30 hover:bg-error-bg font-bold rounded-lg shadow-warm-sm text-sm active:scale-[0.98]"
                   >
                     Delete
                   </button>
@@ -298,15 +298,15 @@ export const TimerPage = () => {
               </li>
             ))}
           </ul>
-          <div className="mt-6 text-lg font-bold text-center text-gray-900">
-            Total Study Time: <span className="text-blue-700">{formatTime(totalStudyTime)}</span>
+          <div className="mt-6 text-lg font-bold text-center text-ink">
+            Total Study Time: <span className="text-terracotta font-mono">{formatTime(totalStudyTime)}</span>
           </div>
         </div>
       </div>
       <div className="mt-12 flex space-x-4">
         <Link
           to="/calendar"
-          className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg shadow-md flex items-center"
+          className="px-6 py-3 bg-terracotta hover:bg-terracotta-light text-warm-white font-bold rounded-lg shadow-warm-md flex items-center active:scale-[0.98]"
         >
           <span className="mr-2">
             <i className="fas fa-calendar-alt"></i>
@@ -315,7 +315,7 @@ export const TimerPage = () => {
         </Link>
         <Link
           to="/todo"
-          className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg shadow-md flex items-center"
+          className="px-6 py-3 bg-terracotta hover:bg-terracotta-light text-warm-white font-bold rounded-lg shadow-warm-md flex items-center active:scale-[0.98]"
         >
           <span className="mr-2">
             <i className="fas fa-tasks"></i>

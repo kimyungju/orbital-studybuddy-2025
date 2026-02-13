@@ -28,9 +28,9 @@ const GroupDetailWrapper = () => {
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 text-slate-700 transition-opacity duration-700 pt-20">
+    <div className="min-h-screen bg-cream text-ink transition-opacity duration-700 pt-20">
       <Navbar />
-      <div className="container mx-auto px-4 py-6">
+      <div className="max-w-6xl mx-auto px-6 py-8">
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
